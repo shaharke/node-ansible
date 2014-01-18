@@ -4,7 +4,7 @@
   "description": "Programmatic interface in Node.js for running Ansible",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha test/**/*.js --reporter spec"
   },
   "repository": {
     "type": "git",
@@ -19,5 +19,17 @@
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/shaharke/node-ansible/issues"
+  },
+  "devDependencies": {
+    "mocha": "~1.17.0",
+    "chai": "~1.8.1",
+    "sinon": "~1.7.3",
+    "chai-as-promised": "~4.1.0",
+    "sinon-chai": "~2.4.0"
+  },
+  "dependencies": {
+    "shelljs": "~0.2.6",
+    "underscore": "~1.5.2",
+    "q": "~1.0.0"
   }
 }
