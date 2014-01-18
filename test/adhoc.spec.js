@@ -15,7 +15,7 @@ describe('AdHoc command', function() {
     execSpy = sinon.spy(require('shelljs'), 'exec');
   })
 
-  var AdHoc = require("../index").Ansible.AdHoc;
+  var AdHoc = require("../index").AdHoc;
 
   describe('with no structured args and freeform arg', function() {
 
