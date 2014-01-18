@@ -1,4 +1,4 @@
 node-ansible
 ============
 
-Programamtic interface in Node.js for running Ansible
+Programmatic interface in Node.js for running Ansible
