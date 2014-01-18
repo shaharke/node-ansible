@@ -3,6 +3,8 @@ node-ansible [![Build Status](https://travis-ci.org/shaharke/node-ansible.png?br
 
 Programmatic interface in Node.js for executing Ansible ad-hoc commands and playbooks
 
+#### Warning: this package is still under development. API might break between minors.
+
 # Installation
 
 `npm install node-ansible --save`
