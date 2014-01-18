@@ -15,7 +15,7 @@ describe('Playbook command', function() {
     execSpy = sinon.spy(require('shelljs'), 'exec');
   })
 
-  var Playbook = require("../index").Ansible.Playbook;
+  var Playbook = require("../index").Playbook;
 
   describe('with only playbook', function() {
 
