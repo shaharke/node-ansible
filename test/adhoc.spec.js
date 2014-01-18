@@ -1,7 +1,6 @@
 var chai = require('chai');
 var expect = chai.expect;
 var sinon = require('sinon');
-var execSpy = sinon.spy(require('shelljs'), 'exec');
 
 var sinonChai = require("sinon-chai");
 var chaiAsPromised = require('chai-as-promised');
@@ -9,6 +8,12 @@ chai.use(sinonChai);
 chai.use(chaiAsPromised);
 
 describe('AdHoc command', function() {
+
+  var execSpy
+
+  before(function() {
+    execSpy = sinon.spy(require('shelljs'), 'exec');
+  })
 
   var AdHoc = require("../index").Ansible.AdHoc;
 
@@ -31,7 +36,7 @@ describe('AdHoc command', function() {
       expect(command.exec()).to.be.rejected;
     })
 
-    it.only('should include reason in rejection', function(done) {
+    it('should include reason in rejection', function(done) {
       var command = new AdHoc().module('shell').args(null, "echo 'hello'");
       expect(command.exec()).to.be.rejected.then(function(error) {
         expect(error).to.have.property('reason');
@@ -50,6 +55,10 @@ describe('AdHoc command', function() {
       expect(command.exec()).to.be.rejected;
     })
 
+  })
+
+  after(function() {
+    execSpy.restore();
   })
 
 })
