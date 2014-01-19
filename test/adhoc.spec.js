@@ -94,6 +94,28 @@ describe('AdHoc command', function() {
     })
   })
 
+  describe('as sudo user', function() {
+
+    it('should contain sudo user flag in execution', function(done) {
+      var command = new AdHoc().module('shell').hosts('local').args(null, "echo 'hello'").asSudo();
+      expect(command.exec()).to.be.fulfilled.then(function() {
+        expect(execSpy).to.be.calledWith('ansible local -m shell -a "echo \'hello\'" -s');
+        done();
+      }).done();
+    })
+  })
+
+  describe('with sudo user specified', function() {
+
+    it('should contain sudo user flag in execution', function(done) {
+      var command = new AdHoc().module('shell').hosts('local').args(null, "echo 'hello'").su('root');
+      expect(command.exec()).to.be.fulfilled.then(function() {
+        expect(execSpy).to.be.calledWith('ansible local -m shell -a "echo \'hello\'" -U root');
+        done();
+      }).done();
+    })
+  })
+
   describe('with inventory', function() {
 
     it('should contain inventory flag in execution', function(done) {

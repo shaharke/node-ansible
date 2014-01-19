@@ -81,6 +81,30 @@ describe('Playbook command', function () {
 
   })
 
+  describe('with sudo user specified', function() {
+
+    it('should execute the playbook with specified sudo user', function (done) {
+      var command = new Playbook().playbook('test').su("root");
+      expect(command.exec()).to.be.fulfilled.then(function () {
+        expect(execSpy).to.be.calledWith('ansible-playbook test.yml -U root');
+        done();
+      }).done();
+    })
+
+  })
+
+  describe('as sudo user', function() {
+
+    it('should execute the playbook with sudo user flag', function (done) {
+      var command = new Playbook().playbook('test').asSudo();
+      expect(command.exec()).to.be.fulfilled.then(function () {
+        expect(execSpy).to.be.calledWith('ansible-playbook test.yml -s');
+        done();
+      }).done();
+    })
+
+  })
+
   describe('with inventory', function() {
 
     it('should execute the playbook with specified inventory', function (done) {
