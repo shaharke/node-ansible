@@ -94,6 +94,17 @@ describe('AdHoc command', function() {
     })
   })
 
+  describe('with inventory', function() {
+
+    it('should contain inventory flag in execution', function(done) {
+      var command = new AdHoc().module('shell').hosts('local').args(null, "echo 'hello'").inventory("/etc/my/hosts");
+      expect(command.exec()).to.be.fulfilled.then(function() {
+        expect(execSpy).to.be.calledWith('ansible local -m shell -a "echo \'hello\'" -i /etc/my/hosts');
+        done();
+      }).done();
+    })
+  })
+
   after(function() {
     execSpy.restore();
   })

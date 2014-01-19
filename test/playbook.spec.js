@@ -81,6 +81,18 @@ describe('Playbook command', function () {
 
   })
 
+  describe('with inventory', function() {
+
+    it('should execute the playbook with specified inventory', function (done) {
+      var command = new Playbook().playbook('test').inventory("/etc/my/hosts");
+      expect(command.exec()).to.be.fulfilled.then(function () {
+        expect(execSpy).to.be.calledWith('ansible-playbook test.yml -i /etc/my/hosts');
+        done();
+      }).done();
+    })
+
+  })
+
   describe('with working directory', function () {
 
     var path = require('path');
