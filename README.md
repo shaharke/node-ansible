@@ -35,7 +35,7 @@ The above code will be translated to the following CLI line:
 
 ## Execution Result
 
-The `exec` function returns a [Q promise](http://documentup.com/kriskowal/q/) with the result of the command execution:
+The `exec` function returns a [Q promise](http://documentup.com/kriskowal/q/) with the result of the executed command:
 
 ```javascript
 var promise = playbook.exec();
