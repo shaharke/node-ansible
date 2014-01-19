@@ -69,6 +69,18 @@ describe('Playbook command', function () {
 
   })
 
+  describe('with user', function() {
+
+    it('should execute the playbook with specified user', function (done) {
+      var command = new Playbook().playbook('test').user("root");
+      expect(command.exec()).to.be.fulfilled.then(function () {
+        expect(execSpy).to.be.calledWith('ansible-playbook test.yml -u root');
+        done();
+      }).done();
+    })
+
+  })
+
   describe('with working directory', function () {
 
     var path = require('path');

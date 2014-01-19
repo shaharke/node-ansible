@@ -83,6 +83,17 @@ describe('AdHoc command', function() {
     })
   })
 
+  describe('with user', function() {
+
+    it('should contain user flag in execution', function(done) {
+      var command = new AdHoc().module('shell').hosts('local').args(null, "echo 'hello'").user("root");
+      expect(command.exec()).to.be.fulfilled.then(function() {
+        expect(execSpy).to.be.calledWith('ansible local -m shell -a "echo \'hello\'" -u root');
+        done();
+      }).done();
+    })
+  })
+
   after(function() {
     execSpy.restore();
   })
