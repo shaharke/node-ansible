@@ -32,3 +32,19 @@ playbook.exec();
 
 The above code will be translated to the following CLI line:
 `ansible-playbook myplaybook.yml`
+
+## Execution Result
+
+The `exec` function returns a [Q promise](http://documentup.com/kriskowal/q/) with the result of the command execution:
+
+```javascript
+var promise = playbook.exec();
+promise.then(function(successResult) {
+  console.log(successResult.code); // Exit code of the executed command
+  console.log(successResult.output) // Standard output/error of the executed command
+})
+
+promise.fail(function(error) {
+  console.error(error);
+})
+```
