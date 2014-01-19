@@ -15,6 +15,10 @@ describe('Playbook command', function () {
     execSpy = sinon.spy(require('shelljs'), 'exec');
   })
 
+  beforeEach(function() {
+    execSpy.reset();
+  })
+
   var Playbook = require("../index").Playbook;
 
   describe('with only playbook', function () {
@@ -47,6 +51,18 @@ describe('Playbook command', function () {
       var command = new Playbook().playbook('test').forks(10);
       expect(command.exec()).to.be.fulfilled.then(function () {
         expect(execSpy).to.be.calledWith('ansible-playbook test.yml -f 10');
+        done();
+      }).done();
+    })
+
+  })
+
+  describe('with verbose', function() {
+
+    it('should execute the playbook with verbosity level', function (done) {
+      var command = new Playbook().playbook('test').verbose("vv");
+      expect(command.exec()).to.be.fulfilled.then(function () {
+        expect(execSpy).to.be.calledWith('ansible-playbook test.yml -vv');
         done();
       }).done();
     })

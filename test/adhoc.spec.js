@@ -15,6 +15,10 @@ describe('AdHoc command', function() {
     execSpy = sinon.spy(require('shelljs'), 'exec');
   })
 
+  beforeEach(function() {
+    execSpy.reset();
+  })
+
   var AdHoc = require("../index").AdHoc;
 
   describe('with no structured args and freeform arg', function() {
@@ -59,10 +63,21 @@ describe('AdHoc command', function() {
 
   describe('with forks', function() {
 
-    it('should contain forks param in execution', function(done) {
+    it('should contain forks flag in execution', function(done) {
       var command = new AdHoc().module('shell').hosts('local').args(null, "echo 'hello'").forks(10);
       expect(command.exec()).to.be.fulfilled.then(function() {
         expect(execSpy).to.be.calledWith('ansible local -m shell -a "echo \'hello\'" -f 10');
+        done();
+      }).done();
+    })
+  })
+
+  describe('with verbose', function() {
+
+    it('should contain verbose flag in execution', function(done) {
+      var command = new AdHoc().module('shell').hosts('local').args(null, "echo 'hello'").verbose("vvv");
+      expect(command.exec()).to.be.fulfilled.then(function() {
+        expect(execSpy).to.be.calledWith('ansible local -m shell -a "echo \'hello\'" -vvv');
         done();
       }).done();
     })
