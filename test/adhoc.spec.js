@@ -57,6 +57,17 @@ describe('AdHoc command', function() {
 
   })
 
+  describe('with forks', function() {
+
+    it('should contain forks param in execution', function(done) {
+      var command = new AdHoc().module('shell').hosts('local').args(null, "echo 'hello'").forks(10);
+      expect(command.exec()).to.be.fulfilled.then(function() {
+        expect(execSpy).to.be.calledWith('ansible local -m shell -a "echo \'hello\'" -f 10');
+        done();
+      }).done();
+    })
+  })
+
   after(function() {
     execSpy.restore();
   })

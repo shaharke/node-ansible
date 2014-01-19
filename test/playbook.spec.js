@@ -41,7 +41,19 @@ describe('Playbook command', function () {
 
   })
 
-  describe.only('with working directory', function () {
+  describe('with forks', function() {
+
+    it('should execute the playbook with forks param as specified', function (done) {
+      var command = new Playbook().playbook('test').forks(10);
+      expect(command.exec()).to.be.fulfilled.then(function () {
+        expect(execSpy).to.be.calledWith('ansible-playbook test.yml -f 10');
+        done();
+      }).done();
+    })
+
+  })
+
+  describe('with working directory', function () {
 
     var path = require('path');
     var cdSpy;
