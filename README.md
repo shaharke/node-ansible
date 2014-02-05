@@ -15,8 +15,6 @@ Programmatic interface in Node.js for executing Ansible ad-hoc commands and play
 
 # Crash Course
 
-Ad-hoc executions:
-
 ```javascript
 var command = new Ansible.AdHoc().module('shell').hosts('local').args("echo 'hello'");
 command.exec();
@@ -52,3 +50,7 @@ promise.then(function(successResult) {
 ```
 
 [Full Documentation](shaharke.github.io/node-ansible)
+
+# Running tests:
+
+`npm test`
