@@ -51,3 +51,7 @@ promise.then(function(successResult) {
 ### Running tests:
 
 `npm test`
+
+### License
+
+MIT
