@@ -58,7 +58,10 @@ promise.then(function(result) {
 })
 
 //  An execution result contains the exit code of the ansible CLI execution and its output (Ansible
-//  pipes stderr to stdout)
+//  pipes stderr to stdout). It's also possible to handle execution errors:
+promise.then(function() {/* arbitrary code */}, function(err) {
+  console.error(err);
+})
 
 //  Notice that the path of my-playbook.yml will be resolved relatively to the working directory of your node process. In many
 //  cases that won't be preferable, in which case it is possible to explicitly set the working directory when executing the command:

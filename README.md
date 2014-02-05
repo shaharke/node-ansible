@@ -13,38 +13,42 @@ Programmatic interface in Node.js for executing Ansible ad-hoc commands and play
 
 `var Ansible = require('node-ansible');`
 
-## Ad-Hoc Commands
+# Crash Course
+
+Ad-hoc executions:
 
 ```javascript
-var command = new Ansible.AdHoc().module('shell').hosts('local').args(null, "echo 'hello'");
+var command = new Ansible.AdHoc().module('shell').hosts('local').args("echo 'hello'");
 command.exec();
 ```
 
-The above code will be translated to the following CLI line:
-`ansible local -m shell -a "echo 'hello'"`
+is equivalent to:
 
-## Playbooks
+```shell
+ansible local -m shell -a "echo 'hello'"
+```
 
 ```javascript
-var playbook = new Ansible.Playbook().playbook('myplaybook');
+var playbook = new Ansible.Playbook().playbook('my-playbook');
 playbook.exec();
 ```
 
-The above code will be translated to the following CLI line:
-`ansible-playbook myplaybook.yml`
+is equivalent to:
 
-## Execution Result
+```shell
+ansible-playbook myplaybook.yml
+```
 
-The `exec` function returns a [Q promise](http://documentup.com/kriskowal/q/) with the result of the executed command:
+Let's execute:
 
 ```javascript
 var promise = playbook.exec();
 promise.then(function(successResult) {
   console.log(successResult.code); // Exit code of the executed command
   console.log(successResult.output) // Standard output/error of the executed command
-})
-
-promise.fail(function(error) {
+}, function(error) {
   console.error(error);
 })
 ```
+
+[Full Documentation](shaharke.github.io/node-ansible)

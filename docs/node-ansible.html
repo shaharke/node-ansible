@@ -100,8 +100,16 @@
       
         
         <p> An execution result contains the exit code of the ansible CLI execution and its output (Ansible
- pipes stderr to stdout)</p>
-<p> Notice that the path of my-playbook.yml will be resolved relatively to the working directory of your node process. In many
+ pipes stderr to stdout). It&#39;s also possible to handle execution errors:</p>
+
+        
+          <div class='highlight'><pre>promise.then(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span><span class="hljs-comment">/* arbitrary code */</span>}, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(err)</span> {</span>
+  console.error(err);
+})</pre></div>
+        
+      
+        
+        <p> Notice that the path of my-playbook.yml will be resolved relatively to the working directory of your node process. In many
  cases that won&#39;t be preferable, in which case it is possible to explicitly set the working directory when executing the command:</p>
 
         
