@@ -5,17 +5,14 @@ Programmatic interface in Node.js for executing Ansible ad-hoc commands and play
 
 #### Warning: this package is still under development. API might break between minors.
 
-# Installation
+### Installation
 
 `npm install node-ansible --save`
 
-# Usage
-
-`var Ansible = require('node-ansible');`
-
-# Crash Course
+### Crash Course
 
 ```javascript
+var Ansible = require('node-ansible');
 var command = new Ansible.AdHoc().module('shell').hosts('local').args("echo 'hello'");
 command.exec();
 ```
@@ -51,6 +48,6 @@ promise.then(function(successResult) {
 
 [Full Documentation](shaharke.github.io/node-ansible)
 
-# Running tests:
+### Running tests:
 
 `npm test`
