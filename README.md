@@ -5,30 +5,53 @@ Programmatic interface in Node.js for executing Ansible ad-hoc commands and play
 
 #### Warning: this package is still under development. API might break between minors.
 
-# Installation
+### Installation
 
 `npm install node-ansible --save`
 
-# Usage
-
-`var Ansible = require('node-ansible');`
-
-## Ad-Hoc Commands
+### Crash Course
 
 ```javascript
-var command = new Ansible.AdHoc().module('shell').hosts('local').args(null, "echo 'hello'");
+var Ansible = require('node-ansible');
+var command = new Ansible.AdHoc().module('shell').hosts('local').args("echo 'hello'");
 command.exec();
 ```
 
-The above code will be translated to the following CLI line:
-`ansible local -m shell -a "echo 'hello'"`
+is equivalent to:
 
-## Playbooks
+```shell
+ansible local -m shell -a "echo 'hello'"
+```
 
 ```javascript
-var playbook = new Ansible.Playbook().playbook('myplaybook');
+var playbook = new Ansible.Playbook().playbook('my-playbook');
 playbook.exec();
 ```
 
-The above code will be translated to the following CLI line:
-`ansible-playbook myplaybook.yml`
+is equivalent to:
+
+```shell
+ansible-playbook myplaybook.yml
+```
+
+Let's execute:
+
+```javascript
+var promise = playbook.exec();
+promise.then(function(successResult) {
+  console.log(successResult.code); // Exit code of the executed command
+  console.log(successResult.output) // Standard output/error of the executed command
+}, function(error) {
+  console.error(error);
+})
+```
+
+[Full Documentation](shaharke.github.io/node-ansible)
+
+### Running tests:
+
+`npm test`
+
+### License
+
+MIT
