@@ -46,7 +46,7 @@ promise.then(function(successResult) {
 })
 ```
 
-[Full Documentation](shaharke.github.io/node-ansible)
+[Full Documentation](http://shaharke.github.io/node-ansible)
 
 ### Running tests:
 
