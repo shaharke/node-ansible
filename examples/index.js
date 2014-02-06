@@ -1,4 +1,9 @@
 //  # node-ansible
+
+//  ### Install
+//  `npm install node-ansible`
+
+//  ### Getting Started
 var Ansible = require('node-ansible');
 
 //  Ansible supports two types of execution methods via its CLI: **ad-hoc** tasks and **playbooks**. node-ansible uses the
