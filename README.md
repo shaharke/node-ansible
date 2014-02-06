@@ -54,4 +54,4 @@ promise.then(function(successResult) {
 
 ### License
 
-MIT
+[MIT](https://github.com/shaharke/node-ansible/blob/master/LICENSE)

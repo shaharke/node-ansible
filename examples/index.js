@@ -1,5 +1,10 @@
-var Ansible = require('node-ansible');
+//  # node-ansible
 
+//  ### Install
+//  `npm install node-ansible`
+
+//  ### Getting Started
+var Ansible = require('node-ansible');
 
 //  Ansible supports two types of execution methods via its CLI: **ad-hoc** tasks and **playbooks**. node-ansible uses the
 //  builder pattern to provide a programmatic interface above Ansible's CLI, that supports both methods.
@@ -82,4 +87,6 @@ command.su('root');
 command.asSudo();
 // verbose level: accepts any level supported by the CLI
 command.verbose('v')
+
+// <a href="https://github.com/shaharke/node-ansible"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png" alt="Fork me on GitHub"></a>
 
