@@ -9,6 +9,10 @@ Programmatic interface in Node.js for executing Ansible ad-hoc commands and play
 
 `npm install node-ansible --save`
 
+**NOTE:** I think it goes without saying, but I'll mention it anyway - you MUST have ansible installed on the same machine
+on which your node process is going to run.
+
+
 ### Crash Course
 
 ```javascript
@@ -46,7 +50,7 @@ promise.then(function(successResult) {
 })
 ```
 
-[Full Documentation](shaharke.github.io/node-ansible)
+[Full Documentation](http://shaharke.github.io/node-ansible)
 
 ### Running tests:
 
