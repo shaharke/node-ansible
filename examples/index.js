@@ -2,6 +2,9 @@
 
 //  ### Install
 //  `npm install node-ansible`
+//
+//  **NOTE:** I think it goes without saying, but I'll mention it anyway - you MUST have ansible installed on the same machine
+//  on which your node process is going to run.
 
 //  ### Getting Started
 var Ansible = require('node-ansible');
@@ -72,6 +75,8 @@ promise.then(function() {/* arbitrary code */}, function(err) {
 //  cases that won't be preferable, in which case it is possible to explicitly set the working directory when executing the command:
 command.exec({cwd:"/path/to/my/playbooks"})
 
+
+//  ### Supported Flags
 //  Most of the flags available in the CLI can be set or turned on using builder functions available for both Playbook
 //  and Ad-Hoc commands:
 
