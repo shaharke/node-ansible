@@ -142,6 +142,29 @@ describe('Playbook command', function () {
     })
   })
 
+  describe('with --ask-pass flag', function() {
+
+    it('should execute the playbook with --ask-pass flag', function (done) {
+      var command = new Playbook().playbook('test').askPass();
+      expect(command.exec()).to.be.fulfilled.then(function () {
+        expect(execSpy).to.be.calledWith('ansible-playbook test.yml --ask-pass');
+        done();
+      }).done();
+    })
+  })
+
+  describe('with --ask-sudo-pass flag', function() {
+
+    it('should execute the playbook with --ask-sudo-pass flag', function (done) {
+      var command = new Playbook().playbook('test').askSudoPass();
+
+      expect(command.exec()).to.be.fulfilled.then(function () {
+        expect(execSpy).to.be.calledWith('ansible-playbook test.yml --ask-sudo-pass');
+        done();
+      }).done();
+    })
+  })
+
   after(function () {
     execSpy.restore();
   })
