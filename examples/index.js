@@ -90,6 +90,10 @@ command.inventory('/etc/ansible/hosts')
 command.su('root');
 //  -s
 command.asSudo();
+//  -k
+command.askPass();
+//  -K
+command.askSudoPass();
 // verbose level: accepts any level supported by the CLI
 command.verbose('v')
 
