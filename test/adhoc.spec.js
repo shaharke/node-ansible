@@ -26,7 +26,7 @@ describe('AdHoc command', function() {
     it('should be translated successfully to ansible command', function(done) {
       var command = new AdHoc().module('shell').hosts('local').args("echo 'hello'");
       expect(command.exec()).to.be.fulfilled.then(function() {
-        expect(spawnSpy).to.be.calledWith('ansible', ['local', '-m', 'shell', '-a', 'echo \'hello\''], {env: process.env});
+        expect(spawnSpy).to.be.calledWith('ansible', ['local', '-m', 'shell', '-a', 'echo \'hello\''], {});
         done();
       }).done();
     })
@@ -66,7 +66,7 @@ describe('AdHoc command', function() {
     it('should contain forks flag in execution', function(done) {
       var command = new AdHoc().module('shell').hosts('local').args("echo 'hello'").forks(10);
       expect(command.exec()).to.be.fulfilled.then(function() {
-        expect(spawnSpy).to.be.calledWith('ansible', ['local', '-m', 'shell', '-a', 'echo \'hello\'', '-f', 10], {env: process.env});
+        expect(spawnSpy).to.be.calledWith('ansible', ['local', '-m', 'shell', '-a', 'echo \'hello\'', '-f', 10], {});
         done();
       }).done();
     })
@@ -77,7 +77,7 @@ describe('AdHoc command', function() {
     it('should contain verbose flag in execution', function(done) {
       var command = new AdHoc().module('shell').hosts('local').args("echo 'hello'").verbose("vvv");
       expect(command.exec()).to.be.fulfilled.then(function() {
-        expect(spawnSpy).to.be.calledWith('ansible', ['local', '-m', 'shell', '-a', 'echo \'hello\'', '-vvv'], {env: process.env});
+        expect(spawnSpy).to.be.calledWith('ansible', ['local', '-m', 'shell', '-a', 'echo \'hello\'', '-vvv'], {});
         done();
       }).done();
     })
@@ -88,7 +88,7 @@ describe('AdHoc command', function() {
     it('should contain user flag in execution', function(done) {
       var command = new AdHoc().module('shell').hosts('local').args("echo 'hello'").user("root");
       expect(command.exec()).to.be.fulfilled.then(function() {
-        expect(spawnSpy).to.be.calledWith('ansible', ['local', '-m', 'shell', '-a', 'echo \'hello\'', '-u', 'root'], {env: process.env});
+        expect(spawnSpy).to.be.calledWith('ansible', ['local', '-m', 'shell', '-a', 'echo \'hello\'', '-u', 'root'], {});
         done();
       }).done();
     })
@@ -99,7 +99,7 @@ describe('AdHoc command', function() {
     it('should contain sudo user flag in execution', function(done) {
       var command = new AdHoc().module('shell').hosts('local').args("echo 'hello'").asSudo();
       expect(command.exec()).to.be.fulfilled.then(function() {
-        expect(spawnSpy).to.be.calledWith('ansible', ['local', '-m', 'shell', '-a', 'echo \'hello\'', '-s'], {env: process.env});
+        expect(spawnSpy).to.be.calledWith('ansible', ['local', '-m', 'shell', '-a', 'echo \'hello\'', '-s'], {});
         done();
       }).done();
     })
@@ -110,7 +110,7 @@ describe('AdHoc command', function() {
     it('should contain sudo user flag in execution', function(done) {
       var command = new AdHoc().module('shell').hosts('local').args("echo 'hello'").su('root');
       expect(command.exec()).to.be.fulfilled.then(function() {
-        expect(spawnSpy).to.be.calledWith('ansible', ['local', '-m', 'shell', '-a', 'echo \'hello\'', '-U', 'root'], {env: process.env});
+        expect(spawnSpy).to.be.calledWith('ansible', ['local', '-m', 'shell', '-a', 'echo \'hello\'', '-U', 'root'], {});
         done();
       }).done();
     })
@@ -121,7 +121,7 @@ describe('AdHoc command', function() {
     it('should contain inventory flag in execution', function(done) {
       var command = new AdHoc().module('shell').hosts('local').args("echo 'hello'").inventory("/etc/my/hosts");
       expect(command.exec()).to.be.fulfilled.then(function() {
-        expect(spawnSpy).to.be.calledWith('ansible', ['local', '-m', 'shell', '-a', 'echo \'hello\'', '-i', '/etc/my/hosts'], {env: process.env});
+        expect(spawnSpy).to.be.calledWith('ansible', ['local', '-m', 'shell', '-a', 'echo \'hello\'', '-i', '/etc/my/hosts'], {});
         done();
       }).done();
     })
