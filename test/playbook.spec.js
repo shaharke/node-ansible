@@ -4,6 +4,7 @@ var sinon = require('sinon');
 
 var sinonChai = require("sinon-chai");
 var chaiAsPromised = require('chai-as-promised');
+var process = require('child_process');
 chai.use(sinonChai);
 chai.use(chaiAsPromised);
 
@@ -12,7 +13,7 @@ describe('Playbook command', function () {
   var spawnSpy;
 
   before(function () {
-    spawnSpy = sinon.spy(require('child_process'), 'spawn');
+    spawnSpy = sinon.spy(process, 'spawn');
   })
 
   beforeEach(function() {
