@@ -5,14 +5,19 @@ var sinon = require('sinon');
 var sinonChai = require("sinon-chai");
 var chaiAsPromised = require('chai-as-promised');
 var process = require('child_process');
+var mockSpawn = require('mock-spawn');
+
 chai.use(sinonChai);
 chai.use(chaiAsPromised);
 
 describe('Playbook command', function () {
 
+  var mySpawn = mockSpawn();
+  var oldSpawn = process.spawn;
   var spawnSpy;
 
   before(function () {
+    process.spawn = mySpawn;
     spawnSpy = sinon.spy(process, 'spawn');
   })
 
@@ -158,6 +163,7 @@ describe('Playbook command', function () {
   })
 
   after(function () {
+    process.spawn = oldSpawn;
     spawnSpy.restore();
   })
 
