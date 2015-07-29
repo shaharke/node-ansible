@@ -56,24 +56,31 @@ var command = new Ansible.Playbook().playbook('my-playbook')
 
 //  ### Executing
 //  Lets execute our command:
-var promise = command.exec();
+var promise = command.exec(
+    {},
+    function(out) { console.log(out); },
+    function(err) { console.log(err); }
+);
 
 //  The exec command returns a [promise](http://promises-aplus.github.io/promises-spec/) object, from which we can
-//  get the result of the execution:
+//  get the result code of the execution:
 promise.then(function(result) {
+  // the output is in the callback functions.
   console.log(result.code);
-  console.log(result.output);
 })
 
-//  An execution result contains the exit code of the ansible CLI execution and its output (Ansible
-//  pipes stderr to stdout). It's also possible to handle execution errors:
+//  An execution result contains the exit code of the ansible CLI execution. It's also possible to handle execution errors:
 promise.then(function() {/* arbitrary code */}, function(err) {
   console.error(err);
 })
 
 //  Notice that the path of my-playbook.yml will be resolved relatively to the working directory of your node process. In many
 //  cases that won't be preferable, in which case it is possible to explicitly set the working directory when executing the command:
-command.exec({cwd:"/path/to/my/playbooks"})
+command.exec(
+    {cwd:"/path/to/my/playbooks"},
+    function(out) { console.log(out); },
+    function(err) { console.log(err); }
+)
 
 
 //  ### Supported Flags

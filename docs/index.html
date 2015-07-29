@@ -110,26 +110,34 @@
 <p> Lets execute our command:</p>
 
         
-          <div class='highlight'><pre><span class="hljs-keyword">var</span> promise = command.exec();</pre></div>
+          <div class='highlight'><pre><span class="hljs-keyword">var</span> promise = command.exec(
+    {},
+    <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">out</span>) </span>{ <span class="hljs-built_in">console</span>.log(out); },
+    <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">err</span>) </span>{ <span class="hljs-built_in">console</span>.log(err); }
+);</pre></div>
         
       
         
         <p> The exec command returns a <a href="http://promises-aplus.github.io/promises-spec/">promise</a> object, from which we can
- get the result of the execution:</p>
+ get the result code of the execution:</p>
 
         
-          <div class='highlight'><pre>promise.then(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(result)</span> </span>{
-  <span class="hljs-built_in">console</span>.log(result.code);
-  <span class="hljs-built_in">console</span>.log(result.output);
+          <div class='highlight'><pre>promise.then(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">result</span>) </span>{</pre></div>
+        
+      
+        
+        <p>the output is in the callback functions.</p>
+
+        
+          <div class='highlight'><pre>  <span class="hljs-built_in">console</span>.log(result.code);
 })</pre></div>
         
       
         
-        <p> An execution result contains the exit code of the ansible CLI execution and its output (Ansible
- pipes stderr to stdout). It’s also possible to handle execution errors:</p>
+        <p> An execution result contains the exit code of the ansible CLI execution. It’s also possible to handle execution errors:</p>
 
         
-          <div class='highlight'><pre>promise.then(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{<span class="hljs-comment">/* arbitrary code */</span>}, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(err)</span> </span>{
+          <div class='highlight'><pre>promise.then(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{<span class="hljs-comment">/* arbitrary code */</span>}, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">err</span>) </span>{
   <span class="hljs-built_in">console</span>.error(err);
 })</pre></div>
         
@@ -139,7 +147,11 @@
  cases that won’t be preferable, in which case it is possible to explicitly set the working directory when executing the command:</p>
 
         
-          <div class='highlight'><pre>command.exec({cwd:<span class="hljs-string">"/path/to/my/playbooks"</span>})</pre></div>
+          <div class='highlight'><pre>command.exec(
+    {cwd:<span class="hljs-string">"/path/to/my/playbooks"</span>},
+    <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">out</span>) </span>{ <span class="hljs-built_in">console</span>.log(out); },
+    <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">err</span>) </span>{ <span class="hljs-built_in">console</span>.log(err); }
+)</pre></div>
         
       
         
