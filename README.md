@@ -18,7 +18,11 @@ on which your node process is going to run.
 ```javascript
 var Ansible = require('node-ansible');
 var command = new Ansible.AdHoc().module('shell').hosts('local').args("echo 'hello'");
-command.exec();
+command.exec(
+  {},
+  function(out) { console.log(out); },
+  function(err) { console.log(err); }
+);
 ```
 
 is equivalent to:
@@ -29,7 +33,11 @@ ansible local -m shell -a "echo 'hello'"
 
 ```javascript
 var playbook = new Ansible.Playbook().playbook('my-playbook');
-playbook.exec();
+playbook.exec(
+  {},
+  function(out) { console.log(out); },
+  function(err) { console.log(err); }
+);
 ```
 
 is equivalent to:
@@ -41,10 +49,13 @@ ansible-playbook myplaybook.yml
 Let's execute:
 
 ```javascript
-var promise = playbook.exec();
+var promise = playbook.exec(
+  {},
+  function(out) { console.log(out); },
+  function(err) { console.log(err); }
+);
 promise.then(function(successResult) {
   console.log(successResult.code); // Exit code of the executed command
-  console.log(successResult.output) // Standard output/error of the executed command
 }, function(error) {
   console.error(error);
 })
