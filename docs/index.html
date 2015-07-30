@@ -110,11 +110,7 @@
 <p> Lets execute our command:</p>
 
         
-          <div class='highlight'><pre><span class="hljs-keyword">var</span> promise = command.exec(
-    {},
-    <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">out</span>) </span>{ <span class="hljs-built_in">console</span>.log(out); },
-    <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">err</span>) </span>{ <span class="hljs-built_in">console</span>.log(err); }
-);</pre></div>
+          <div class='highlight'><pre><span class="hljs-keyword">var</span> promise = command.exec();</pre></div>
         
       
         
@@ -122,14 +118,9 @@
  get the result code of the execution:</p>
 
         
-          <div class='highlight'><pre>promise.then(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">result</span>) </span>{</pre></div>
-        
-      
-        
-        <p>the output is in the callback functions.</p>
-
-        
-          <div class='highlight'><pre>  <span class="hljs-built_in">console</span>.log(result.code);
+          <div class='highlight'><pre>promise.then(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">result</span>) </span>{
+  <span class="hljs-built_in">console</span>.log(result.output);
+  <span class="hljs-built_in">console</span>.log(result.code);
 })</pre></div>
         
       
@@ -147,11 +138,17 @@
  cases that won’t be preferable, in which case it is possible to explicitly set the working directory when executing the command:</p>
 
         
-          <div class='highlight'><pre>command.exec(
-    {cwd:<span class="hljs-string">"/path/to/my/playbooks"</span>},
-    <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">out</span>) </span>{ <span class="hljs-built_in">console</span>.log(out); },
-    <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">err</span>) </span>{ <span class="hljs-built_in">console</span>.log(err); }
-)</pre></div>
+          <div class='highlight'><pre>command.exec({cwd:<span class="hljs-string">"/path/to/my/playbooks"</span>})</pre></div>
+        
+      
+        
+        <p> The command is also an EventEmitter, which lets you get the output streamed in real time.</p>
+
+        
+          <div class='highlight'><pre><span class="hljs-keyword">var</span> command = <span class="hljs-keyword">new</span> Ansible.Playbook().playbook(<span class="hljs-string">'my-playbook'</span>);
+command.on(<span class="hljs-string">'stdout'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">data</span>) </span>{ <span class="hljs-built_in">console</span>.log(data); });
+command.on(<span class="hljs-string">'stderr'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">data</span>) </span>{ <span class="hljs-built_in">console</span>.log(data); });
+command.exec();</pre></div>
         
       
         

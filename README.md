@@ -18,11 +18,7 @@ on which your node process is going to run.
 ```javascript
 var Ansible = require('node-ansible');
 var command = new Ansible.AdHoc().module('shell').hosts('local').args("echo 'hello'");
-command.exec(
-  {},
-  function(out) { console.log(out); },
-  function(err) { console.log(err); }
-);
+command.exec();
 ```
 
 is equivalent to:
@@ -33,11 +29,7 @@ ansible local -m shell -a "echo 'hello'"
 
 ```javascript
 var playbook = new Ansible.Playbook().playbook('my-playbook');
-playbook.exec(
-  {},
-  function(out) { console.log(out); },
-  function(err) { console.log(err); }
-);
+playbook.exec();
 ```
 
 is equivalent to:
@@ -49,16 +41,20 @@ ansible-playbook myplaybook.yml
 Let's execute:
 
 ```javascript
-var promise = playbook.exec(
-  {},
-  function(out) { console.log(out); },
-  function(err) { console.log(err); }
-);
+var promise = playbook.exec();
 promise.then(function(successResult) {
   console.log(successResult.code); // Exit code of the executed command
+  console.log(successResult.output) // Standard output/error of the executed command
 }, function(error) {
   console.error(error);
 })
+```
+
+We can also get the results of a command streamed in real time (from both playbooks and adhoc commands):
+```javascript
+playbook.on('stdout', function(data) { console.log(data); });
+playbook.on('stderr', function(data) { console.log(data); });
+var promise = playbook.exec();
 ```
 
 [Full Documentation](http://shaharke.github.io/node-ansible)
