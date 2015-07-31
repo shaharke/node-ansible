@@ -115,7 +115,7 @@
       
         
         <p> The exec command returns a <a href="http://promises-aplus.github.io/promises-spec/">promise</a> object, from which we can
- get the result code of the execution:</p>
+ get the result of the execution:</p>
 
         
           <div class='highlight'><pre>promise.then(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">result</span>) </span>{
@@ -125,7 +125,8 @@
         
       
         
-        <p> An execution result contains the exit code of the ansible CLI execution. It’s also possible to handle execution errors:</p>
+        <p> An execution result contains the exit code of the ansible CLI execution and its output (Ansible
+ pipes stderr to stdout). It’s also possible to handle execution errors:</p>
 
         
           <div class='highlight'><pre>promise.then(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{<span class="hljs-comment">/* arbitrary code */</span>}, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">err</span>) </span>{
@@ -146,8 +147,8 @@
 
         
           <div class='highlight'><pre><span class="hljs-keyword">var</span> command = <span class="hljs-keyword">new</span> Ansible.Playbook().playbook(<span class="hljs-string">'my-playbook'</span>);
-command.on(<span class="hljs-string">'stdout'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">data</span>) </span>{ <span class="hljs-built_in">console</span>.log(data); });
-command.on(<span class="hljs-string">'stderr'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">data</span>) </span>{ <span class="hljs-built_in">console</span>.log(data); });
+command.on(<span class="hljs-string">'stdout'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">data</span>) </span>{ <span class="hljs-built_in">console</span>.log(data.toString()); });
+command.on(<span class="hljs-string">'stderr'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">data</span>) </span>{ <span class="hljs-built_in">console</span>.log(data.toString()); });
 command.exec();</pre></div>
         
       

@@ -59,13 +59,14 @@ var command = new Ansible.Playbook().playbook('my-playbook')
 var promise = command.exec();
 
 //  The exec command returns a [promise](http://promises-aplus.github.io/promises-spec/) object, from which we can
-//  get the result code of the execution:
+//  get the result of the execution:
 promise.then(function(result) {
   console.log(result.output);
   console.log(result.code);
 })
 
-//  An execution result contains the exit code of the ansible CLI execution. It's also possible to handle execution errors:
+//  An execution result contains the exit code of the ansible CLI execution and its output (Ansible
+//  pipes stderr to stdout). It's also possible to handle execution errors:
 promise.then(function() {/* arbitrary code */}, function(err) {
   console.error(err);
 })
@@ -76,8 +77,8 @@ command.exec({cwd:"/path/to/my/playbooks"})
 
 //  The command is also an EventEmitter, which lets you get the output streamed in real time.
 var command = new Ansible.Playbook().playbook('my-playbook');
-command.on('stdout', function(data) { console.log(data); });
-command.on('stderr', function(data) { console.log(data); });
+command.on('stdout', function(data) { console.log(data.toString()); });
+command.on('stderr', function(data) { console.log(data.toString()); });
 command.exec();
 
 
