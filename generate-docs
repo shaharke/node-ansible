@@ -1,0 +1,7 @@
+#!/bin/bash
+if ! type 'docco' > /dev/null; then
+  sudo npm install -g docco
+fi
+
+docco -l linear examples/index.js
+
