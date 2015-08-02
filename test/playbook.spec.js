@@ -4,19 +4,25 @@ var sinon = require('sinon');
 
 var sinonChai = require("sinon-chai");
 var chaiAsPromised = require('chai-as-promised');
+var process = require('child_process');
+var mockSpawn = require('mock-spawn');
+
 chai.use(sinonChai);
 chai.use(chaiAsPromised);
 
 describe('Playbook command', function () {
 
-  var execSpy;
+  var mySpawn = mockSpawn();
+  var oldSpawn = process.spawn;
+  var spawnSpy;
 
   before(function () {
-    execSpy = sinon.spy(require('shelljs'), 'exec');
+    process.spawn = mySpawn;
+    spawnSpy = sinon.spy(process, 'spawn');
   })
 
   beforeEach(function() {
-    execSpy.reset();
+    spawnSpy.reset();
   })
 
   var Playbook = require("../index").Playbook;
@@ -26,7 +32,7 @@ describe('Playbook command', function () {
     it('should execute the playbook', function (done) {
       var command = new Playbook().playbook('test');
       expect(command.exec()).to.be.fulfilled.then(function () {
-        expect(execSpy).to.be.calledWith('ansible-playbook test.yml');
+        expect(spawnSpy).to.be.calledWith('ansible-playbook', ['test.yml'], {});
         done();
       }).done();
     })
@@ -38,7 +44,7 @@ describe('Playbook command', function () {
     it('should execute the playbook with the given variables', function (done) {
       var command = new Playbook().playbook('test').variables({foo: "bar"});
       expect(command.exec()).to.be.fulfilled.then(function () {
-        expect(execSpy).to.be.calledWith('ansible-playbook test.yml -e "foo=bar"');
+        expect(spawnSpy).to.be.calledWith('ansible-playbook', ['test.yml', '-e', 'foo=bar'], {});
         done();
       }).done();
     })
@@ -50,7 +56,7 @@ describe('Playbook command', function () {
     it('should execute the playbook with forks param as specified', function (done) {
       var command = new Playbook().playbook('test').forks(10);
       expect(command.exec()).to.be.fulfilled.then(function () {
-        expect(execSpy).to.be.calledWith('ansible-playbook test.yml -f 10');
+        expect(spawnSpy).to.be.calledWith('ansible-playbook', ['test.yml', '-f', 10], {});
         done();
       }).done();
     })
@@ -62,7 +68,7 @@ describe('Playbook command', function () {
     it('should execute the playbook with verbosity level', function (done) {
       var command = new Playbook().playbook('test').verbose("vv");
       expect(command.exec()).to.be.fulfilled.then(function () {
-        expect(execSpy).to.be.calledWith('ansible-playbook test.yml -vv');
+        expect(spawnSpy).to.be.calledWith('ansible-playbook', ['test.yml', '-vv'], {});
         done();
       }).done();
     })
@@ -74,7 +80,7 @@ describe('Playbook command', function () {
     it('should execute the playbook with specified user', function (done) {
       var command = new Playbook().playbook('test').user("root");
       expect(command.exec()).to.be.fulfilled.then(function () {
-        expect(execSpy).to.be.calledWith('ansible-playbook test.yml -u root');
+        expect(spawnSpy).to.be.calledWith('ansible-playbook', ['test.yml', '-u', 'root'], {});
         done();
       }).done();
     })
@@ -86,7 +92,7 @@ describe('Playbook command', function () {
     it('should execute the playbook with specified sudo user', function (done) {
       var command = new Playbook().playbook('test').su("root");
       expect(command.exec()).to.be.fulfilled.then(function () {
-        expect(execSpy).to.be.calledWith('ansible-playbook test.yml -U root');
+        expect(spawnSpy).to.be.calledWith('ansible-playbook', ['test.yml', '-U', 'root'], {});
         done();
       }).done();
     })
@@ -98,7 +104,7 @@ describe('Playbook command', function () {
     it('should execute the playbook with sudo user flag', function (done) {
       var command = new Playbook().playbook('test').asSudo();
       expect(command.exec()).to.be.fulfilled.then(function () {
-        expect(execSpy).to.be.calledWith('ansible-playbook test.yml -s');
+        expect(spawnSpy).to.be.calledWith('ansible-playbook', ['test.yml', '-s'], {});
         done();
       }).done();
     })
@@ -110,7 +116,7 @@ describe('Playbook command', function () {
     it('should execute the playbook with specified inventory', function (done) {
       var command = new Playbook().playbook('test').inventory("/etc/my/hosts");
       expect(command.exec()).to.be.fulfilled.then(function () {
-        expect(execSpy).to.be.calledWith('ansible-playbook test.yml -i /etc/my/hosts');
+        expect(spawnSpy).to.be.calledWith('ansible-playbook' ,['test.yml', '-i', '/etc/my/hosts'], {});
         done();
       }).done();
     })
@@ -120,26 +126,17 @@ describe('Playbook command', function () {
   describe('with working directory', function () {
 
     var path = require('path');
-    var cdSpy;
-
-    before(function() {
-      cdSpy = sinon.spy(require('shelljs'), 'cd');
-    })
 
     it('should change to working directory during execution', function (done) {
       var command = new Playbook().playbook('test');
       var workingDir = path.resolve(__dirname, './fixtures');
       var promise = command.exec({cwd: workingDir});
       expect(promise).to.be.fulfilled.then(function () {
-        expect(cdSpy).to.be.calledTwice
-        expect(cdSpy).to.be.calledWith(workingDir);
+        expect(spawnSpy).to.be.calledWith('ansible-playbook', ['test.yml'], {cwd: workingDir});
         done();
       }).done();
     })
 
-    after(function() {
-      cdSpy.restore();
-    })
   })
 
   describe('with --ask-pass flag', function() {
@@ -147,7 +144,7 @@ describe('Playbook command', function () {
     it('should execute the playbook with --ask-pass flag', function (done) {
       var command = new Playbook().playbook('test').askPass();
       expect(command.exec()).to.be.fulfilled.then(function () {
-        expect(execSpy).to.be.calledWith('ansible-playbook test.yml --ask-pass');
+        expect(spawnSpy).to.be.calledWith('ansible-playbook', ['test.yml', '--ask-pass'], {});
         done();
       }).done();
     })
@@ -159,14 +156,15 @@ describe('Playbook command', function () {
       var command = new Playbook().playbook('test').askSudoPass();
 
       expect(command.exec()).to.be.fulfilled.then(function () {
-        expect(execSpy).to.be.calledWith('ansible-playbook test.yml --ask-sudo-pass');
+        expect(spawnSpy).to.be.calledWith('ansible-playbook', ['test.yml', '--ask-sudo-pass'], {});
         done();
       }).done();
     })
   })
 
   after(function () {
-    execSpy.restore();
+    process.spawn = oldSpawn;
+    spawnSpy.restore();
   })
 
 })

@@ -1,4 +1,4 @@
-node-ansible [![Build Status](https://travis-ci.org/shaharke/node-ansible.png?branch=master)](https://travis-ci.org/shaharke/node-ansible)
+node-ansible [![Build Status](https://travis-ci.org/shaharke/node-ansible.png?branch=develop)](https://travis-ci.org/shaharke/node-ansible)
 ============
 
 Programmatic interface in Node.js for executing Ansible ad-hoc commands and playbooks
@@ -48,6 +48,13 @@ promise.then(function(successResult) {
 }, function(error) {
   console.error(error);
 })
+```
+
+We can also get the results of a command streamed in real time (from both playbooks and adhoc commands):
+```javascript
+playbook.on('stdout', function(data) { console.log(data.toString()); });
+playbook.on('stderr', function(data) { console.log(data.toString()); });
+var promise = playbook.exec();
 ```
 
 [Full Documentation](http://shaharke.github.io/node-ansible)

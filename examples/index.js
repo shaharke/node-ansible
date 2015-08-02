@@ -61,8 +61,8 @@ var promise = command.exec();
 //  The exec command returns a [promise](http://promises-aplus.github.io/promises-spec/) object, from which we can
 //  get the result of the execution:
 promise.then(function(result) {
-  console.log(result.code);
   console.log(result.output);
+  console.log(result.code);
 })
 
 //  An execution result contains the exit code of the ansible CLI execution and its output (Ansible
@@ -74,6 +74,12 @@ promise.then(function() {/* arbitrary code */}, function(err) {
 //  Notice that the path of my-playbook.yml will be resolved relatively to the working directory of your node process. In many
 //  cases that won't be preferable, in which case it is possible to explicitly set the working directory when executing the command:
 command.exec({cwd:"/path/to/my/playbooks"})
+
+//  The command is also an EventEmitter, which lets you get the output streamed in real time.
+var command = new Ansible.Playbook().playbook('my-playbook');
+command.on('stdout', function(data) { console.log(data.toString()); });
+command.on('stderr', function(data) { console.log(data.toString()); });
+command.exec();
 
 
 //  ### Supported Flags

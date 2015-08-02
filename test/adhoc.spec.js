@@ -4,19 +4,25 @@ var sinon = require('sinon');
 
 var sinonChai = require("sinon-chai");
 var chaiAsPromised = require('chai-as-promised');
+var process = require('child_process');
+var mockSpawn = require('mock-spawn');
+
 chai.use(sinonChai);
 chai.use(chaiAsPromised);
 
 describe('AdHoc command', function() {
 
-  var execSpy
+  var mySpawn = mockSpawn();
+  var oldSpawn = process.spawn;
+  var spawnSpy
 
   before(function() {
-    execSpy = sinon.spy(require('shelljs'), 'exec');
+    process.spawn = mySpawn;
+    spawnSpy = sinon.spy(process, 'spawn');
   })
 
   beforeEach(function() {
-    execSpy.reset();
+    spawnSpy.reset();
   })
 
   var AdHoc = require("../index").AdHoc;
@@ -26,7 +32,7 @@ describe('AdHoc command', function() {
     it('should be translated successfully to ansible command', function(done) {
       var command = new AdHoc().module('shell').hosts('local').args("echo 'hello'");
       expect(command.exec()).to.be.fulfilled.then(function() {
-        expect(execSpy).to.be.calledWith('ansible local -m shell -a "echo \'hello\'"');
+        expect(spawnSpy).to.be.calledWith('ansible', ['local', '-m', 'shell', '-a', 'echo \'hello\''], {});
         done();
       }).done();
     })
@@ -66,7 +72,7 @@ describe('AdHoc command', function() {
     it('should contain forks flag in execution', function(done) {
       var command = new AdHoc().module('shell').hosts('local').args("echo 'hello'").forks(10);
       expect(command.exec()).to.be.fulfilled.then(function() {
-        expect(execSpy).to.be.calledWith('ansible local -m shell -a "echo \'hello\'" -f 10');
+        expect(spawnSpy).to.be.calledWith('ansible', ['local', '-m', 'shell', '-a', 'echo \'hello\'', '-f', 10], {});
         done();
       }).done();
     })
@@ -77,7 +83,7 @@ describe('AdHoc command', function() {
     it('should contain verbose flag in execution', function(done) {
       var command = new AdHoc().module('shell').hosts('local').args("echo 'hello'").verbose("vvv");
       expect(command.exec()).to.be.fulfilled.then(function() {
-        expect(execSpy).to.be.calledWith('ansible local -m shell -a "echo \'hello\'" -vvv');
+        expect(spawnSpy).to.be.calledWith('ansible', ['local', '-m', 'shell', '-a', 'echo \'hello\'', '-vvv'], {});
         done();
       }).done();
     })
@@ -88,7 +94,7 @@ describe('AdHoc command', function() {
     it('should contain user flag in execution', function(done) {
       var command = new AdHoc().module('shell').hosts('local').args("echo 'hello'").user("root");
       expect(command.exec()).to.be.fulfilled.then(function() {
-        expect(execSpy).to.be.calledWith('ansible local -m shell -a "echo \'hello\'" -u root');
+        expect(spawnSpy).to.be.calledWith('ansible', ['local', '-m', 'shell', '-a', 'echo \'hello\'', '-u', 'root'], {});
         done();
       }).done();
     })
@@ -99,7 +105,7 @@ describe('AdHoc command', function() {
     it('should contain sudo user flag in execution', function(done) {
       var command = new AdHoc().module('shell').hosts('local').args("echo 'hello'").asSudo();
       expect(command.exec()).to.be.fulfilled.then(function() {
-        expect(execSpy).to.be.calledWith('ansible local -m shell -a "echo \'hello\'" -s');
+        expect(spawnSpy).to.be.calledWith('ansible', ['local', '-m', 'shell', '-a', 'echo \'hello\'', '-s'], {});
         done();
       }).done();
     })
@@ -110,7 +116,7 @@ describe('AdHoc command', function() {
     it('should contain sudo user flag in execution', function(done) {
       var command = new AdHoc().module('shell').hosts('local').args("echo 'hello'").su('root');
       expect(command.exec()).to.be.fulfilled.then(function() {
-        expect(execSpy).to.be.calledWith('ansible local -m shell -a "echo \'hello\'" -U root');
+        expect(spawnSpy).to.be.calledWith('ansible', ['local', '-m', 'shell', '-a', 'echo \'hello\'', '-U', 'root'], {});
         done();
       }).done();
     })
@@ -121,14 +127,15 @@ describe('AdHoc command', function() {
     it('should contain inventory flag in execution', function(done) {
       var command = new AdHoc().module('shell').hosts('local').args("echo 'hello'").inventory("/etc/my/hosts");
       expect(command.exec()).to.be.fulfilled.then(function() {
-        expect(execSpy).to.be.calledWith('ansible local -m shell -a "echo \'hello\'" -i /etc/my/hosts');
+        expect(spawnSpy).to.be.calledWith('ansible', ['local', '-m', 'shell', '-a', 'echo \'hello\'', '-i', '/etc/my/hosts'], {});
         done();
       }).done();
     })
   })
 
   after(function() {
-    execSpy.restore();
+    process.spawn = oldSpawn;
+    spawnSpy.restore();
   })
 
 })
