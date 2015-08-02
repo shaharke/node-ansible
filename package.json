@@ -28,8 +28,8 @@
     "sinon-chai": "~2.4.0"
   },
   "dependencies": {
-    "shelljs": "~0.2.6",
-    "underscore": "~1.5.2",
-    "q": "~1.0.0"
+    "mock-spawn": "^0.2.6",
+    "q": "~1.0.0",
+    "underscore": "~1.5.2"
   }
 }

@@ -50,6 +50,13 @@ promise.then(function(successResult) {
 })
 ```
 
+We can also get the results of a command streamed in real time (from both playbooks and adhoc commands):
+```javascript
+playbook.on('stdout', function(data) { console.log(data.toString()); });
+playbook.on('stderr', function(data) { console.log(data.toString()); });
+var promise = playbook.exec();
+```
+
 [Full Documentation](http://shaharke.github.io/node-ansible)
 
 ### Running tests:
