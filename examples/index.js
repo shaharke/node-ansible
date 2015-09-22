@@ -103,5 +103,20 @@ command.askSudoPass();
 // verbose level: accepts any level supported by the CLI
 command.verbose('v')
 
+// -e variables
+command.variables({name: 'value'})
+
+// #### Playbook Flags
+
+// --tags=tag
+command.tags('tag');
+command.tags('tag','othertag');
+command.tags(tag_array);
+
+// --skip-tags=tag
+command.skipTags('tag');
+command.skipTags('tag','othertag');
+command.skipTags(tag_array);
+
 // <a href="https://github.com/shaharke/node-ansible"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png" alt="Fork me on GitHub"></a>
 
