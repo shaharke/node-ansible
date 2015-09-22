@@ -172,9 +172,6 @@ describe('Playbook command', function () {
         done();
       }).done();
     })
-  })
-
-  describe('with --tags params', function() {
   
     it('should execute the playbook with multiple --tags', function (done) {
       var command = new Playbook().playbook('test').tags('onetag','twotags');
@@ -184,9 +181,6 @@ describe('Playbook command', function () {
         done();
       }).done();
     })
-  })
-
-  describe('with --tags array', function() {
  
     it('should execute the playbook with array of --tags', function (done) {
       var command = new Playbook().playbook('test').tags(['onetag','twotags']);
@@ -208,9 +202,6 @@ describe('Playbook command', function () {
         done();
       }).done();
     })
-  })
-
-  describe('with --skip-tags params', function() {
 
     it('should execute the playbook with multiple --skip-tags', function (done) {
       var command = new Playbook().playbook('test').skipTags('onetag','twotags');
@@ -220,9 +211,6 @@ describe('Playbook command', function () {
         done();
       }).done();
     })
-  })
-
-  describe('with --skip-tags params', function() {
 
     it('should execute the playbook with array of --skip-tags', function (done) {
       var command = new Playbook().playbook('test').skipTags(['one tag','twotags']);
