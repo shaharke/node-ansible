@@ -1,0 +1,5 @@
+---
+- hosts: local
+  tasks:
+  - debug: var=foo
+
