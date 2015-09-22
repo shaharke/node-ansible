@@ -162,6 +162,78 @@ describe('Playbook command', function () {
     })
   })
 
+  describe('with --tags param', function() {
+
+    it('should execute the playbook with --tags', function (done) {
+      var command = new Playbook().playbook('test').tags('onetag');
+
+      expect(command.exec()).to.be.fulfilled.then(function () {
+        expect(spawnSpy).to.be.calledWith('ansible-playbook', ['test.yml', "--tags=onetag"], {});
+        done();
+      }).done();
+    })
+  })
+
+  describe('with --tags params', function() {
+  
+    it('should execute the playbook with multiple --tags', function (done) {
+      var command = new Playbook().playbook('test').tags('onetag','twotags');
+  
+      expect(command.exec()).to.be.fulfilled.then(function () {
+        expect(spawnSpy).to.be.calledWith('ansible-playbook', ['test.yml', "--tags=onetag,twotags"], {});
+        done();
+      }).done();
+    })
+  })
+
+  describe('with --tags array', function() {
+ 
+    it('should execute the playbook with array of --tags', function (done) {
+      var command = new Playbook().playbook('test').tags(['onetag','twotags']);
+ 
+      expect(command.exec()).to.be.fulfilled.then(function () {
+        expect(spawnSpy).to.be.calledWith('ansible-playbook', ['test.yml', "--tags=onetag,twotags"], {});
+        done();
+      }).done();
+    })
+  })
+
+  describe('with --skip-tags param', function() {
+
+    it('should execute the playbook with --skip-tags', function (done) {
+      var command = new Playbook().playbook('test').skipTags('onetag');
+
+      expect(command.exec()).to.be.fulfilled.then(function () {
+        expect(spawnSpy).to.be.calledWith('ansible-playbook', ['test.yml', '--skip-tags=onetag'], {});
+        done();
+      }).done();
+    })
+  })
+
+  describe('with --skip-tags params', function() {
+
+    it('should execute the playbook with multiple --skip-tags', function (done) {
+      var command = new Playbook().playbook('test').skipTags('onetag','twotags');
+
+      expect(command.exec()).to.be.fulfilled.then(function () {
+        expect(spawnSpy).to.be.calledWith('ansible-playbook', ['test.yml', '--skip-tags=onetag,twotags'], {});
+        done();
+      }).done();
+    })
+  })
+
+  describe('with --skip-tags params', function() {
+
+    it('should execute the playbook with array of --skip-tags', function (done) {
+      var command = new Playbook().playbook('test').skipTags(['one tag','twotags']);
+
+      expect(command.exec()).to.be.fulfilled.then(function () {
+        expect(spawnSpy).to.be.calledWith('ansible-playbook', ['test.yml', '--skip-tags=one tag,twotags'], {});
+        done();
+      }).done();
+    })
+  })
+
   after(function () {
     process.spawn = oldSpawn;
     spawnSpy.restore();
