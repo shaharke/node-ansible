@@ -44,7 +44,21 @@ describe('Playbook command', function () {
     it('should execute the playbook with the given variables', function (done) {
       var command = new Playbook().playbook('test').variables({foo: "bar"});
       expect(command.exec()).to.be.fulfilled.then(function () {
-        expect(spawnSpy).to.be.calledWith('ansible-playbook', ['test.yml', '-e', 'foo=bar'], {});
+        expect(spawnSpy).to.be.calledWith('ansible-playbook', ['test.yml', '-e', '{"foo":"bar"}'], {});
+        done();
+      }).done();
+    })
+
+    it('should execute the playbook with the given complex variables', function (done) {
+      variable = { 
+        foo: {
+          bar: ["shu"]
+        } 
+      };
+      var command = new Playbook().playbook('test').variables(variable);
+
+      expect(command.exec()).to.be.fulfilled.then(function () {
+        expect(spawnSpy).to.be.calledWith('ansible-playbook', ['test.yml', '-e', '{"foo":{"bar":["shu"]}}'], {});
         done();
       }).done();
     })
@@ -172,9 +186,6 @@ describe('Playbook command', function () {
         done();
       }).done();
     })
-  })
-
-  describe('with --tags params', function() {
   
     it('should execute the playbook with multiple --tags', function (done) {
       var command = new Playbook().playbook('test').tags('onetag','twotags');
@@ -184,9 +195,6 @@ describe('Playbook command', function () {
         done();
       }).done();
     })
-  })
-
-  describe('with --tags array', function() {
  
     it('should execute the playbook with array of --tags', function (done) {
       var command = new Playbook().playbook('test').tags(['onetag','twotags']);
@@ -208,9 +216,6 @@ describe('Playbook command', function () {
         done();
       }).done();
     })
-  })
-
-  describe('with --skip-tags params', function() {
 
     it('should execute the playbook with multiple --skip-tags', function (done) {
       var command = new Playbook().playbook('test').skipTags('onetag','twotags');
@@ -220,9 +225,6 @@ describe('Playbook command', function () {
         done();
       }).done();
     })
-  })
-
-  describe('with --skip-tags params', function() {
 
     it('should execute the playbook with array of --skip-tags', function (done) {
       var command = new Playbook().playbook('test').skipTags(['one tag','twotags']);
