@@ -1,6 +1,6 @@
 {
   "name": "node-ansible",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "description": "Programmatic interface in Node.js for executing Ansible ad-hoc commands and playbooks",
   "main": "index.js",
   "scripts": {
