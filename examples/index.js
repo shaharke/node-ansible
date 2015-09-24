@@ -81,6 +81,10 @@ command.on('stdout', function(data) { console.log(data.toString()); });
 command.on('stderr', function(data) { console.log(data.toString()); });
 command.exec();
 
+// Output from the Ansible command is set to unbuffered by default
+// If you have a huge amount of ansible output and don't care about granular
+// stderr/stdout updates, you may want to switch that off
+command.exec({buffered:true})
 
 //  ### Supported Flags
 //  Most of the flags available in the CLI can be set or turned on using builder functions available for both Playbook
