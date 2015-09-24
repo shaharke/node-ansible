@@ -171,7 +171,7 @@ describe('Playbook command', function () {
       }).done();
     })
 
-    it('should turn on buffering when told too', function (done) {
+    it('should turn on buffering when told to', function (done) {
       var command = new Playbook().playbook('test');
       var promise = command.exec({buffered:true});
       expect(promise).to.be.fulfilled.then(function () {
