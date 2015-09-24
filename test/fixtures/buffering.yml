@@ -1,0 +1,33 @@
+---
+
+# PYTHONUNBUFFERED=1 nohup ansible-playbook -i /tmp/hosts fixtures/buffering.yml -c local > test.out & tail -f test.out
+
+- hosts: local
+  tasks:
+  - command: sleep 0.01 
+  - command: sleep 0.02
+  - command: sleep 0.03
+  - command: sleep 0.04
+  - command: sleep 0.05
+  - command: sleep 0.06
+  - command: sleep 0.07
+  - command: sleep 0.08
+  - command: sleep 0.09
+  - command: sleep 0.10
+  - command: sleep 0.09
+  - command: sleep 0.08
+  - command: sleep 0.07
+  - command: sleep 0.06
+  - command: sleep 0.05
+  - command: sleep 0.04
+  - command: sleep 0.03
+  - command: sleep 0.02
+  - command: sleep 0.01
+  - command: sleep 0.02
+  - command: sleep 0.03
+  - command: sleep 0.04
+  - command: sleep 0.05
+  - command: sleep 0.06
+  - command: sleep 0.07
+  - command: sleep 0.08
+  - command: sleep 0.09
