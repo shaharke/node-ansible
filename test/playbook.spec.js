@@ -140,6 +140,18 @@ describe('Playbook command', function () {
 
   })
 
+  describe('with inventory subset', function() {
+
+    it('should execute the playbook with specified inventory subset limit', function (done) {
+      var command = new Playbook().playbook('test').limit("localhost");
+      expect(command.exec()).to.be.fulfilled.then(function () {
+        expect(spawnSpy).to.be.calledWith('ansible-playbook' ,['test.yml', '-l', 'localhost']);
+        done();
+      }).done();
+    })
+
+  })
+
   describe('with private-key', function() {
 
     it('should execute the playbook with specified private key', function (done) {
