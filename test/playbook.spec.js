@@ -140,6 +140,18 @@ describe('Playbook command', function () {
 
   })
 
+  describe('with private-key', function() {
+
+    it('should execute the playbook with specified private key', function (done) {
+      var command = new Playbook().playbook('test').privateKey("/home/user/.ssh/id_rsa");
+      expect(command.exec()).to.be.fulfilled.then(function () {
+        expect(spawnSpy).to.be.calledWith('ansible-playbook' ,['test.yml', '--private-key', '"/home/user/.ssh/id_rsa"']);
+        done();
+      }).done();
+    })
+
+  })
+
   describe('with working directory', function () {
 
     var path = require('path');

@@ -98,6 +98,8 @@ command.user('root')
 command.inventory('/etc/ansible/hosts')
 //  -U root
 command.su('root');
+//  --private-key filename
+command.privateKey('/home/user/.ssh/id_rsa')
 //  -s
 command.asSudo();
 //  -k
