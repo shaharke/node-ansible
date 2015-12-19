@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>node-ansible</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <link rel="stylesheet" media="all" href="public/stylesheets/normalize.css" />
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div class="container">
+    <div class="page">
+
+      <div class="header">
+        
+          
+          <h1 id="node-ansible">node-ansible</h1>
+
+          
+        
+
+        
+      </div>
+
+      
+        
+        <h3 id="install">Install</h3>
+<p> <code>npm install node-ansible</code></p>
+<p> <strong>NOTE:</strong> I think it goes without saying, but I’ll mention it anyway - you MUST have ansible installed on the same machine
+ on which your node process is going to run.</p>
+
+        
+      
+        
+        <h3 id="getting-started">Getting Started</h3>
+
+        
+          <div class='highlight'><pre><span class="hljs-keyword">var</span> Ansible = <span class="hljs-built_in">require</span>(<span class="hljs-string">'node-ansible'</span>);</pre></div>
+        
+      
+        
+        <p> Ansible supports two types of execution methods via its CLI: <strong>ad-hoc</strong> tasks and <strong>playbooks</strong>. node-ansible uses the
+ builder pattern to provide a programmatic interface above Ansible’s CLI, that supports both methods.</p>
+
+        
+      
+        
+        <h3 id="ad-hoc-tasks">Ad-hoc tasks</h3>
+
+        
+          <div class='highlight'><pre><span class="hljs-keyword">new</span> Ansible.AdHoc().hosts(<span class="hljs-string">'prod-servers'</span>).module(<span class="hljs-string">'ping'</span>);</pre></div>
+        
+      
+        
+        <p> The command above will use Ansible to ping all hosts under the <code>prod-servers</code> group. As we said,
+ node-ansible only wraps Ansible’s CLI tool, so the above code in fact translates to the following shell execution:</p>
+<pre><code> &gt; ansible prod-servers -m ping
+</code></pre><p> Most modules accept and even require arguments when executed. The following line of code will build an ad-hoc
+ executor for the <code>shell</code> module and pass a freeform argument to it:</p>
+
+        
+          <div class='highlight'><pre>
+<span class="hljs-keyword">new</span> Ansible.AdHoc().hosts(<span class="hljs-string">'prod-servers'</span>).module(<span class="hljs-string">'shell'</span>).args(<span class="hljs-string">'echo "hello world"'</span>);</pre></div>
+        
+      
+        
+        <p> Again, the command above actually translates to the following shell execution:</p>
+<pre><code class="lang-shell"> &gt; ansible prod-servers -m shell -a &#39;echo &quot;hello world&quot;&#39;
+</code></pre>
+
+        
+      
+        
+        <p> Obviously, node-ansible must support key-value arguments which are very common in Ansible modules.
+ With node-ansible you can simply use JSON objects to represent key-value arguments:</p>
+
+        
+          <div class='highlight'><pre>
+<span class="hljs-keyword">new</span> Ansible.AdHoc().hosts(<span class="hljs-string">'prod-servers'</span>)
+                   .module(<span class="hljs-string">'shell'</span>)
+                   .args({ chdir: <span class="hljs-string">"/tmp"</span> }, <span class="hljs-string">'echo "hello world"'</span>);</pre></div>
+        
+      
+        
+        <h3 id="playbooks">Playbooks</h3>
+<p> A probably more interesting use-case is the execution of playbooks. Building a playbook command in node-ansible is
+ very similar to building ad-hoc commands:</p>
+
+        
+          <div class='highlight'><pre><span class="hljs-keyword">new</span> Ansible.Playbook().playbook(<span class="hljs-string">'my-playbook'</span>);</pre></div>
+        
+      
+        
+        <p> The command above translates to the following shell execution: <code>ansible-playbook my-playbook.yml</code>.
+ Playbook variables can be set as follows:</p>
+
+        
+          <div class='highlight'><pre><span class="hljs-keyword">var</span> command = <span class="hljs-keyword">new</span> Ansible.Playbook().playbook(<span class="hljs-string">'my-playbook'</span>)
+                                    .variables({ foo: <span class="hljs-string">'bar'</span> });</pre></div>
+        
+      
+        
+        <p> which translates to the following shell execution:</p>
+<pre><code> &gt; ansible-playbook my-playbook.yml -e <span class="hljs-string">'foo=bar'</span>
+</code></pre>
+        
+      
+        
+        <h3 id="executing">Executing</h3>
+<p> Lets execute our command:</p>
+
+        
+          <div class='highlight'><pre><span class="hljs-keyword">var</span> promise = command.exec();</pre></div>
+        
+      
+        
+        <p> The exec command returns a <a href="http://promises-aplus.github.io/promises-spec/">promise</a> object, from which we can
+ get the result of the execution:</p>
+
+        
+          <div class='highlight'><pre>promise.then(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(result)</span> </span>{
+  <span class="hljs-built_in">console</span>.log(result.output);
+  <span class="hljs-built_in">console</span>.log(result.code);
+})</pre></div>
+        
+      
+        
+        <p> An execution result contains the exit code of the ansible CLI execution and its output (Ansible
+ pipes stderr to stdout). It’s also possible to handle execution errors:</p>
+
+        
+          <div class='highlight'><pre>promise.then(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{<span class="hljs-comment">/* arbitrary code */</span>}, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(err)</span> </span>{
+  <span class="hljs-built_in">console</span>.error(err);
+})</pre></div>
+        
+      
+        
+        <p> Notice that the path of my-playbook.yml will be resolved relatively to the working directory of your node process. In many
+ cases that won’t be preferable, in which case it is possible to explicitly set the working directory when executing the command:</p>
+
+        
+          <div class='highlight'><pre>command.exec({cwd:<span class="hljs-string">"/path/to/my/playbooks"</span>})</pre></div>
+        
+      
+        
+        <p> The command is also an EventEmitter, which lets you get the output streamed in real time.</p>
+
+        
+          <div class='highlight'><pre><span class="hljs-keyword">var</span> command = <span class="hljs-keyword">new</span> Ansible.Playbook().playbook(<span class="hljs-string">'my-playbook'</span>);
+command.on(<span class="hljs-string">'stdout'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(data)</span> </span>{ <span class="hljs-built_in">console</span>.log(data.toString()); });
+command.on(<span class="hljs-string">'stderr'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(data)</span> </span>{ <span class="hljs-built_in">console</span>.log(data.toString()); });
+command.exec();</pre></div>
+        
+      
+        
+        <h3 id="supported-flags">Supported Flags</h3>
+<p> Most of the flags available in the CLI can be set or turned on using builder functions available for both Playbook
+ and Ad-Hoc commands:</p>
+
+        
+      
+        
+        <p> -f 4</p>
+
+        
+          <div class='highlight'><pre>command.forks(<span class="hljs-number">4</span>)</pre></div>
+        
+      
+        
+        <p> -u root</p>
+
+        
+          <div class='highlight'><pre>command.user(<span class="hljs-string">'root'</span>)</pre></div>
+        
+      
+        
+        <p> -i /etc/ansible/hosts</p>
+
+        
+          <div class='highlight'><pre>command.inventory(<span class="hljs-string">'/etc/ansible/hosts'</span>)</pre></div>
+        
+      
+        
+        <p> -U root</p>
+
+        
+          <div class='highlight'><pre>command.su(<span class="hljs-string">'root'</span>);</pre></div>
+        
+      
+        
+        <p> -s</p>
+
+        
+          <div class='highlight'><pre>command.asSudo();</pre></div>
+        
+      
+        
+        <p> -k</p>
+
+        
+          <div class='highlight'><pre>command.askPass();</pre></div>
+        
+      
+        
+        <p> -K</p>
+
+        
+          <div class='highlight'><pre>command.askSudoPass();</pre></div>
+        
+      
+        
+        <p>verbose level: accepts any level supported by the CLI</p>
+
+        
+          <div class='highlight'><pre>command.verbose(<span class="hljs-string">'v'</span>)</pre></div>
+        
+      
+        
+        <p>-e variables</p>
+
+        
+          <div class='highlight'><pre>command.variables({name: <span class="hljs-string">'value'</span>})</pre></div>
+        
+      
+        
+        <h4 id="playbook-flags">Playbook Flags</h4>
+
+        
+      
+        
+        <p>—tags=tag</p>
+
+        
+          <div class='highlight'><pre>command.tags(<span class="hljs-string">'tag'</span>);
+command.tags(<span class="hljs-string">'tag'</span>,<span class="hljs-string">'othertag'</span>);
+command.tags(tag_array);</pre></div>
+        
+      
+        
+        <p>—skip-tags=tag</p>
+
+        
+          <div class='highlight'><pre>command.skipTags(<span class="hljs-string">'tag'</span>);
+command.skipTags(<span class="hljs-string">'tag'</span>,<span class="hljs-string">'othertag'</span>);
+command.skipTags(tag_array);</pre></div>
+        
+      
+        
+        <p><a href="https://github.com/shaharke/node-ansible"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png" alt="Fork me on GitHub"></a></p>
+
+        
+      
+      <div class="fleur">h</div>
+    </div>
+  </div>
+</body>
+</html>
