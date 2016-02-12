@@ -134,6 +134,18 @@ describe('AdHoc command', function() {
     })
   })
 
+  describe('with inventory subset', function() {
+
+    it('should execute the playbook with specified inventory subset limit', function (done) {
+      var command = new AdHoc().module('shell').hosts('local').inventory('/etc/my/hosts').limit('localhost').args("echo 'hello'");
+      expect(command.exec()).to.be.fulfilled.then(function() {
+        expect(spawnSpy).to.be.calledWith('ansible', ['local', '-m', 'shell', '-a', 'echo \'hello\'', '-i', '/etc/my/hosts', '-l', 'localhost']);
+        done();
+      }).done();
+    })
+
+  })
+
   describe('with private key', function() {
 
     it('should contain private key flag in execution', function(done) {
