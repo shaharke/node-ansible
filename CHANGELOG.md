@@ -4,7 +4,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
-## 0.5.4 - 2016-02-16
+## 0.5.5 - 2016-02-16
 ### Added
 - [#24](https://github.com/shaharke/node-ansible/pull/24) Add command option for limit
 
