@@ -151,7 +151,7 @@ describe('AdHoc command', function() {
     it('should contain private key flag in execution', function(done) {
       var command = new AdHoc().module('shell').hosts('local').args("echo 'hello'").privateKey("/home/user/.ssh/id_rsa");
       expect(command.exec()).to.be.fulfilled.then(function() {
-        expect(spawnSpy).to.be.calledWith('ansible', ['local', '-m', 'shell', '-a', 'echo \'hello\'', '--private-key', '"/home/user/.ssh/id_rsa"']);
+        expect(spawnSpy).to.be.calledWith('ansible', ['local', '-m', 'shell', '-a', 'echo \'hello\'', '--private-key', '/home/user/.ssh/id_rsa']);
         done();
       }).done();
     })
