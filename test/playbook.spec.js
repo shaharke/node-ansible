@@ -164,6 +164,18 @@ describe('Playbook command', function () {
 
   })
 
+  describe('with vault password file', function() {
+
+    it('should execute the playbook with specified vault password file', function (done) {
+      var command = new Playbook().playbook('test').vaultPasswordFile("/vault.txt");
+      expect(command.exec()).to.be.fulfilled.then(function () {
+        expect(spawnSpy).to.be.calledWith('ansible-playbook' ,['test.yml', '--vault-password-file', '/vault.txt']);
+        done();
+      }).done();
+    })
+
+  })
+
   describe('with working directory', function () {
 
     var path = require('path');
