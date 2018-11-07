@@ -123,14 +123,30 @@ describe('AdHoc command', function() {
     })
   })
 
+  describe('with dry run enabled', function() {
+
+    it('should contain check flag in execution', function(done) {
+      var command = new AdHoc().module('shell').hosts('localhost').args("echo 'hello'").check(true);
+      expect(command.exec()).to.be.fulfilled.then(function() {
+        expect(spawnSpy).to.be.calledWith('ansible', ['localhost', '-m', 'shell', '-a', 'echo \'hello\'', '-C',true]);
+        done();
+      }).done();
+    })
+  })
+
   describe('with inventory', function() {
 
     it('should contain inventory flag in execution', function(done) {
       var command = new AdHoc().module('shell').hosts('local').args("echo 'hello'").inventory("/etc/my/hosts");
-      expect(command.exec()).to.be.fulfilled.then(function() {
-        expect(spawnSpy).to.be.calledWith('ansible', ['local', '-m', 'shell', '-a', 'echo \'hello\'', '-i', '/etc/my/hosts']);
-        done();
-      }).done();
+      try {
+        expect(command.exec()).to.be.fulfilled.then(function() {
+          expect(spawnSpy).to.be.calledWith('ansible', ['local', '-m', 'shell', '-a', 'echo \'hello\'', '-i', '/etc/my/hosts']);
+          done();
+        }).done();
+      }
+      catch (e) {
+        done(e);
+      }
     })
   })
 
