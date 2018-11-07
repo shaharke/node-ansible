@@ -107,10 +107,11 @@ command.askPass();
 //  -K
 command.askSudoPass();
 // verbose level: accepts any level supported by the CLI
-command.verbose('v')
-
+command.verbose('v');
+// -C, --dry-run
+command.check();
 // -e variables
-command.variables({name: 'value'})
+command.variables({name: 'value'});
 
 // #### Playbook Flags
 
