@@ -128,6 +128,18 @@ describe('Playbook command', function () {
 
   })
 
+  describe('dry run, no changes done', function() {
+
+    it('should execute the playbook in dry run mode', function (done) {
+      var command = new Playbook().playbook('test').runCheck();
+      expect(command.exec()).to.be.fulfilled.then(function () {
+        expect(spawnSpy).to.be.calledWith('ansible-playbook', ['test.yml', '--check']);
+        done();
+      }).done();
+    })
+
+  })
+
   describe('with inventory', function() {
 
     it('should execute the playbook with specified inventory', function (done) {
