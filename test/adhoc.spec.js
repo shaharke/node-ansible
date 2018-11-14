@@ -126,9 +126,9 @@ describe('AdHoc command', function() {
   describe('with dry run enabled', function() {
 
     it('should contain check flag in execution', function(done) {
-      var command = new AdHoc().module('shell').hosts('localhost').args("echo 'hello'").check(true);
+      var command = new AdHoc().module('shell').hosts('localhost').args("echo 'hello'").check();
       expect(command.exec()).to.be.fulfilled.then(function() {
-        expect(spawnSpy).to.be.calledWith('ansible', ['localhost', '-m', 'shell', '-a', 'echo \'hello\'', '-C',true]);
+        expect(spawnSpy).to.be.calledWith('ansible', ['localhost', '-m', 'shell', '-a', 'echo \'hello\'', '-C']);
         done();
       }).done();
     })
