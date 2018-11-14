@@ -108,6 +108,8 @@ command.askPass();
 command.askSudoPass();
 // verbose level: accepts any level supported by the CLI
 command.verbose('v')
+// -C, --dry-run
+command.dryRun();
 
 // -e variables
 command.variables({name: 'value'})
