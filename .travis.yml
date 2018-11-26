@@ -1,3 +1,11 @@
 language: node_js
 node_js:
-  - "0.10"
+- '0.10'
+deploy:
+  provider: npm
+  email: node.ansible.deploy@gmail.com
+  api_key:
+    secure: cTaBkp8xIZgMXPIBNImvOKSlQg9AjoiRGIDRL26EE2qn5R8ZeBy50hYDNJK3rWHfgUcgUA5uM8m+vgEgV4vTJ1nNgfMl3arzSNx+A2gDUH1F2lK9olKK7mKx6ityWz4gUwvBxAvR9+RtnQidbJuEHXD9ep21lYeohMETCZM20/4=
+  on:
+    tags: true
+    repo: shaharke/node-ansible
