@@ -207,6 +207,24 @@ describe('Playbook command', function () {
 
   })
 
+  describe('with env variables', function () {
+
+    it('include the variables', function (done) {
+      var command = new Playbook().playbook('test');
+      var promise = command.exec({
+        env: {
+          TEST_ENV: 'true'
+        }
+      });
+
+      expect(promise).to.be.fulfilled.then(function () {
+        expect(spawnSpy).to.be.calledWith('ansible-playbook', ['test.yml']);
+        expect(spawnSpy.getCall(0).args[2]).to.have.deep.property( "env.TEST_ENV", "true" );
+        done();
+      }).done();
+    })
+  })
+
   describe('with --ask-pass flag', function() {
 
     it('should execute the playbook with --ask-pass flag', function (done) {
