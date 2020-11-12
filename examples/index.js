@@ -96,6 +96,8 @@ command.forks(4)
 command.user('root')
 //  -i /etc/ansible/hosts
 command.inventory('/etc/ansible/hosts')
+//  -i /etc/ansible/hosts1 -i /etc/ansible/hosts2
+command.inventory(['/etc/ansible/hosts1', '/etc/ansible/hosts2'])
 //  -U root
 command.su('root');
 //  --private-key filename

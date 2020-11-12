@@ -134,6 +134,17 @@ describe('AdHoc command', function() {
     })
   })
 
+  describe('with two inventories', function() {
+
+    it('should contain two inventory flags in execution', function(done) {
+      var command = new AdHoc().module('shell').hosts('local').args("echo 'hello'").inventory(["/etc/my/hosts", "/etc/my/hosts2"]);
+      expect(command.exec()).to.be.fulfilled.then(function() {
+        expect(spawnSpy).to.be.calledWith('ansible', ['local', '-m', 'shell', '-a', 'echo \'hello\'', '-i', '/etc/my/hosts', '-i', '/etc/my/hosts2']);
+        done();
+      }).done();
+    })
+  })
+
   describe('with inventory subset', function() {
 
     it('should execute the playbook with specified inventory subset limit', function (done) {
