@@ -31,5 +31,6 @@
     "mock-spawn": "^0.2.6",
     "q": "~1.0.0",
     "underscore": "~1.5.2"
-  }
+  },
+  "files": ["lib"]
 }
