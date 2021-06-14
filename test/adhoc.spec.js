@@ -112,6 +112,17 @@ describe('AdHoc command', function() {
     })
   })
 
+  describe('as become', function() {
+
+    it('should contain sudo user flag in execution', function(done) {
+      var command = new AdHoc().module('shell').hosts('local').args("echo 'hello'").asBecome();
+      expect(command.exec()).to.be.fulfilled.then(function() {
+        expect(spawnSpy).to.be.calledWith('ansible', ['local', '-m', 'shell', '-a', 'echo \'hello\'', '--become']);
+        done();
+      }).done();
+    })
+  })
+
   describe('with sudo user specified', function() {
 
     it('should contain sudo user flag in execution', function(done) {
