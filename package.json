@@ -4,7 +4,7 @@
   "description": "Programmatic interface in Node.js for executing Ansible ad-hoc commands and playbooks",
   "main": "index.js",
   "scripts": {
-    "test": "mocha test/**/*.spec.js --reporter spec"
+    "test": "mocha --require node_modules/ts-node/register/index.js --sort test/**.ts --exit"
   },
   "repository": {
     "type": "git",
@@ -21,15 +21,18 @@
     "url": "https://github.com/shaharke/node-ansible/issues"
   },
   "devDependencies": {
-    "mocha": "~1.17.0",
-    "chai": "~1.8.1",
-    "sinon": "~1.7.3",
-    "chai-as-promised": "~4.1.0",
-    "sinon-chai": "~2.4.0"
-  },
-  "dependencies": {
+    "@types/chai": "^4.3.6",
+    "@types/chai-as-promised": "^7.1.6",
+    "@types/mocha": "^10.0.2",
+    "@types/sinon": "^10.0.18",
+    "@types/sinon-chai": "^3.2.10",
+    "chai": "~4.3.10",
+    "chai-as-promised": "~7.1.1",
+    "mocha": "~10.2.0",
     "mock-spawn": "^0.2.6",
-    "q": "~1.0.0",
-    "underscore": "~1.5.2"
+    "sinon": "~16.0.0",
+    "sinon-chai": "~3.7.0",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.2.2"
   }
 }
