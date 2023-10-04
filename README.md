@@ -21,14 +21,20 @@ var command = new Ansible.AdHoc().module('shell').hosts('local').args("echo 'hel
 command.exec();
 ```
 
+```typescript
+import { Ansible } from 'node-ansible';
+const command = new Ansible.AdHoc().module('shell').hosts('local').args("echo 'hello'");
+command.exec();
+```
+
 is equivalent to:
 
 ```shell
 ansible local -m shell -a "echo 'hello'"
 ```
 
-```javascript
-var playbook = new Ansible.Playbook().playbook('my-playbook');
+```typescript
+const playbook = new Ansible.Playbook().playbook('my-playbook');
 playbook.exec();
 ```
 
